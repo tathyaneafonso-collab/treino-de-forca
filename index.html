@@ -51,6 +51,9 @@ a{color:inherit}
 .wk .dot{width:6px;height:6px;border-radius:50%;background:currentColor;margin-top:2px}
 
 main .wrap{padding-block:18px 120px;display:flex;flex-direction:column;gap:14px}
+.login{display:flex;flex-direction:column;gap:12px}
+.login input{font-size:16px}
+.login .err{color:var(--pink-ink);font-weight:600;font-size:14px;margin:0}
 .weeknote{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
 .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--pink-ink)}
 .weeknote p{margin:0;color:var(--muted);font-size:14px}
@@ -167,6 +170,14 @@ td.empty{color:var(--line)}
 const PROGRAMA = {
   turma: "Turma Fundadora",
   fim: "2026-11-16", /* a partir deste dia (00h de Brasília) os treinos saem do ar */
+  /* e-mails liberados, guardados embaralhados (SHA-256 do e-mail em minúsculas) */
+  acessos: [
+    "89e2cb63e85179db3972426e4e5a2bcd0e9293661678d13a2a4337eb3af78ae8",
+    "cb16490838554aadaf54cf3c67f390aa719396903ca71616479394ebffd695a6",
+    "a49726ef081b73f0acb38ee1f944d505c180c8349b4c1a9933c7f36e0210bdad"
+  ],
+  /* registro de uso: link do Google Forms (formResponse) e os ids dos campos. Vazio = desligado */
+  registro: {url:"", email:"", aparelho:"", evento:""},
   semanas: [
     {n:1, nome:"aprender", datas:"19 a 23/10", inicio:"2026-10-19", series:2,
      texto:"2 séries em cada exercício. Escolha uma carga em que sobrariam umas 4 repetições no fim da série. Foco total na técnica."},
@@ -356,6 +367,13 @@ function render(){
     document.getElementById("view").innerHTML=encerradaView();
     return;
   }
+  if(!liberada){
+    document.getElementById("topTitle").textContent="Treino de Força · "+PROGRAMA.turma;
+    document.getElementById("backBtn").hidden=true;
+    document.getElementById("weeks").hidden=true;
+    document.getElementById("view").innerHTML=loginView();
+    return;
+  }
   renderWeeks();
   const titles={home:"Treino de Força · "+PROGRAMA.turma,cargas:"Minhas cargas",guia:"Guia de início"};
   document.getElementById("topTitle").textContent=view==="treino"?`Treino ${treino} · semana ${week}`:titles[view];
@@ -364,7 +382,56 @@ function render(){
   const v=document.getElementById("view");
   v.innerHTML=view==="home"?home():view==="treino"?treinoView(treino):view==="cargas"?cargas():guia();
 }
-function go(v,t){view=v;treino=t||null;render();window.scrollTo(0,0);if(v==="treino")wake()}
+function go(v,t){view=v;treino=t||null;render();window.scrollTo(0,0);if(v==="treino"){wake();registrar(`abriu treino ${t} · semana ${week}`)}}
+
+/* ====== acesso por e-mail ====== */
+let liberada=false, loginErro="";
+const norm=(e)=>String(e||"").trim().toLowerCase();
+async function hash(e){
+  const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(norm(e)));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+function aparelho(){
+  let id=get("aparelho");
+  if(!id){id=Math.random().toString(36).slice(2,8);set("aparelho",id)}
+  const ua=navigator.userAgent, so=/iPhone|iPad/.test(ua)?"iPhone":/Android/.test(ua)?"Android":/Mac/.test(ua)?"Mac":/Windows/.test(ua)?"Windows":"outro";
+  return so+" · "+id;
+}
+function registrar(evento){
+  const r=PROGRAMA.registro, email=get("email");
+  if(!r.url||!email)return;
+  const body=new URLSearchParams();
+  body.append(r.email,email); body.append(r.aparelho,aparelho()); body.append(r.evento,evento);
+  try{fetch(r.url,{method:"POST",mode:"no-cors",body}).catch(()=>{})}catch(e){}
+}
+function loginView(){
+  return `<form class="weeknote login" id="loginForm" novalidate>
+    <span class="eyebrow">Acesso da turma</span>
+    <h2 style="margin:0;font-size:22px;line-height:1.2">Entre com o e-mail que você usou na inscrição</h2>
+    <div class="field"><label for="loginEmail">seu e-mail</label><input id="loginEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="none" placeholder="voce@email.com" value="${esc(get("tentativa")||"")}" required></div>
+    ${loginErro?`<p class="err" role="alert">${esc(loginErro)}</p>`:""}
+    <button class="finish" type="submit">Entrar</button>
+    <p class="muted" style="font-size:12px;margin:0">Você só precisa fazer isso uma vez neste celular. O acesso é pessoal${PROGRAMA.registro.url?": registramos o e-mail, o aparelho e os treinos abertos para acompanhar a turma":""}.</p>
+  </form>`;
+}
+document.getElementById("view").addEventListener("submit",async e=>{
+  if(e.target.id!=="loginForm")return;
+  e.preventDefault();
+  const email=norm(document.getElementById("loginEmail").value);
+  set("tentativa",email);
+  if(!email||!email.includes("@")){loginErro="Digite um e-mail válido.";return render()}
+  let ok=false;
+  try{ok=PROGRAMA.acessos.includes(await hash(email))}catch(err){ok=false}
+  if(ok){set("email",email);set("tentativa","");liberada=true;loginErro="";registrar("entrou no app");render();window.scrollTo(0,0)}
+  else{loginErro="Esse e-mail não está na lista da turma. Confira se é o mesmo da inscrição ou chame a equipe no grupo do WhatsApp.";render()}
+});
+async function iniciar(){
+  const email=get("email");
+  if(email){try{liberada=PROGRAMA.acessos.includes(await hash(email))}catch(e){liberada=false}
+    if(!liberada)set("email","");}
+  render();
+  if(liberada)registrar("abriu o app");
+}
 
 document.getElementById("backBtn").addEventListener("click",()=>go("home"));
 document.getElementById("view").addEventListener("click",e=>{
@@ -393,7 +460,7 @@ let lock=null;
 async function wake(){try{if(navigator.wakeLock&&!lock){lock=await navigator.wakeLock.request("screen");lock.addEventListener("release",()=>lock=null)}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(view==="treino"&&document.visibilityState==="visible")wake()});
 
-render();
+iniciar();
 </script>
 
 </body>

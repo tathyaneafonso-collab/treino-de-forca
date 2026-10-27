@@ -166,6 +166,7 @@ td.empty{color:var(--line)}
 /* ====== PROGRAMA — para uma nova turma, edite só este bloco ====== */
 const PROGRAMA = {
   turma: "Turma Fundadora",
+  fim: "2026-11-16", /* a partir deste dia (00h de Brasília) os treinos saem do ar */
   semanas: [
     {n:1, nome:"aprender", datas:"19 a 23/10", inicio:"2026-10-19", series:2,
      texto:"2 séries em cada exercício. Escolha uma carga em que sobrariam umas 4 repetições no fim da série. Foco total na técnica."},
@@ -340,7 +341,21 @@ function guia(){
   <p class="foot">Tathy Afonso · CREF 013004-G/GO · Consulte um médico antes de começar qualquer atividade física.</p>`;
 }
 
+function encerrada(){return Date.now()>=new Date(PROGRAMA.fim+"T00:00:00-03:00").getTime()}
+function encerradaView(){
+  return `<section class="weeknote"><span class="eyebrow">${esc(PROGRAMA.turma)} · encerrada</span>
+    <h2 style="margin:4px 0 2px;font-size:22px;line-height:1.2">Suas 4 semanas terminaram. Parabéns por ter chegado até aqui!</h2>
+    <p>O acesso aos treinos desta turma foi encerrado. Suas anotações continuam salvas: veja abaixo quanto você evoluiu.</p>
+    <p>Quer seguir com o treino do próximo mês? Chama a equipe Tathy Afonso no WhatsApp que a gente te passa a próxima turma.</p></section>`+cargas();
+}
 function render(){
+  if(encerrada()){
+    document.getElementById("topTitle").textContent="Treino de Força · "+PROGRAMA.turma;
+    document.getElementById("backBtn").hidden=true;
+    document.getElementById("weeks").hidden=true;
+    document.getElementById("view").innerHTML=encerradaView();
+    return;
+  }
   renderWeeks();
   const titles={home:"Treino de Força · "+PROGRAMA.turma,cargas:"Minhas cargas",guia:"Guia de início"};
   document.getElementById("topTitle").textContent=view==="treino"?`Treino ${treino} · semana ${week}`:titles[view];

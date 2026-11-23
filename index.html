@@ -168,72 +168,78 @@ td.empty{color:var(--line)}
 <script>
 /* ====== PROGRAMA — para uma nova turma, edite só este bloco ====== */
 const PROGRAMA = {
-  turma: "Turma Fundadora",
-  fim: "2026-11-16", /* a partir deste dia (00h de Brasília) os treinos saem do ar */
+  turma: "Turma Fundadora · Mês 02",
+  fim: "2026-12-28", /* a partir deste dia (00h de Brasília) os treinos saem do ar */
   /* e-mails liberados, guardados embaralhados (SHA-256 do e-mail em minúsculas) */
   acessos: [
     "89e2cb63e85179db3972426e4e5a2bcd0e9293661678d13a2a4337eb3af78ae8",
     "cb16490838554aadaf54cf3c67f390aa719396903ca71616479394ebffd695a6",
-    "a49726ef081b73f0acb38ee1f944d505c180c8349b4c1a9933c7f36e0210bdad",
-    "1f036cfe9c7bdeab8d40ba4f120addcb4e1495fb093b5ec0bd390bdc94cac09a"
+    "a49726ef081b73f0acb38ee1f944d505c180c8349b4c1a9933c7f36e0210bdad"
   ],
   /* registro de uso: link do Google Forms (formResponse) e os ids dos campos. Vazio = desligado */
   registro: {url:"", email:"", aparelho:"", evento:""},
   semanas: [
-    {n:1, nome:"aprender", datas:"19 a 23/10", inicio:"2026-10-19", series:2,
-     texto:"2 séries em cada exercício. Escolha uma carga em que sobrariam umas 4 repetições no fim da série. Foco total na técnica."},
-    {n:2, nome:"volume", datas:"26 a 30/10", inicio:"2026-10-26", series:3,
-     texto:"Agora são 3 séries. A carga deve deixar sobrar umas 3 repetições."},
-    {n:3, nome:"carga", datas:"2 a 6/11", inicio:"2026-11-02", series:3,
-     texto:"Use a regra de progressão: quem bateu o topo das repetições na semana 2 sobe a carga. Sobrar umas 2 repetições."},
-    {n:4, nome:"semana mais forte", datas:"9 a 13/11", inicio:"2026-11-09", series:3,
-     texto:"A semana mais pesada do mês. Nas máquinas, sobrar 1 repetição. No peso livre (halter e barra), sobrar 2, sem perder a técnica."}
+    {n:1, nome:"achar as cargas", datas:"30/11 a 4/12", inicio:"2026-11-30", foco:"pirâmide com folga de 3",
+     texto:"Nos 2 primeiros exercícios a carga sobe a cada série (12, 10, 8). Na série de 8 tem que sobrar umas 3 repetições. Anote a carga da série de 8."},
+    {n:2, nome:"subir", datas:"7 a 11/12", inicio:"2026-12-07", foco:"pirâmide com folga de 2",
+     texto:"Mesma pirâmide com mais carga. Na série de 8, sobrar umas 2 repetições."},
+    {n:3, nome:"mais carga", datas:"14 a 18/12", inicio:"2026-12-14", foco:"folga de 1 a 2 · tri-set com 4 voltas",
+     texto:"Suba de novo. Na série de 8, sobrar 1 ou 2 repetições sem perder a técnica. O tri-set do fim ganha uma volta."},
+    {n:4, nome:"semana de recorde", datas:"21 a 25/12", inicio:"2026-12-21", foco:"maior carga do mês",
+     texto:"Tente a maior carga do mês na série de 8, com técnica limpa. Semana do Natal: se sexta não der, faça o treino C no sábado."}
   ],
   cardio: [
-    {titulo:"Caminhada inclinada", desc:"20 min contínuos na esteira, inclinação entre 8 e 12%.", anotar:"inclinação e velocidade"},
-    {titulo:"30 minutos sem parar", desc:"30 min de bike, esteira ou elíptico, num ritmo em que dá pra conversar.", anotar:"distância"},
-    {titulo:"Intervalado 5x5", desc:"5 vezes: 3 min forte + 2 min leve (25 min no total).", anotar:"velocidade no forte"},
-    {titulo:"Desafio 5 km", desc:"5 km caminhando, trotando ou correndo, do jeito que der. Guarde esse tempo: no próximo mês a meta é baixar ele.", anotar:"tempo total"}
+    {titulo:"Intervalado curto", desc:"6 vezes: 2 min forte + 1 min leve (18 min), na esteira, bike ou elíptico.", anotar:"velocidade no forte"},
+    {titulo:"35 minutos sem parar", desc:"35 min contínuos num ritmo em que dá pra conversar.", anotar:"distância"},
+    {titulo:"Subida", desc:"8 vezes: 1 min de esteira bem inclinada (10 a 15%) + 1 min plano e leve (16 min).", anotar:"inclinação e velocidade"},
+    {titulo:"Desafio 5 km · revanche", desc:"Os mesmos 5 km do fim do mês 1. A meta é baixar o seu tempo.", anotar:"tempo total"}
   ],
+  /* tipos: pir = pirâmide (3 séries, carga sobe a cada série) · normal = séries iguais · tri = tri-set no fim */
   treinos: {
     A:{dia:"segunda", enfase:"ênfase quadríceps e glúteo",
-      mob:[["Mobilidade de quadril 90/90","2 x 8 cada lado","mobilidade de quadril 90 90"],
-           ["Agachamento com pausa embaixo (peso do corpo)","2 x 8","Agachamento com pausa embaixo (peso do corpo) execução correta"],
-           ["Ponte de glúteo","2 x 12","Ponte de glúteo execução correta"]],
+      mob:[["Mobilidade de tornozelo ajoelhada","2 x 10 cada lado","mobilidade de tornozelo ajoelhado joelho à frente"],
+           ["Agachamento cossaco","2 x 6 cada lado","agachamento cossaco mobilidade execução"],
+           ["Gato-camelo (coluna)","2 x 8","gato camelo mobilidade coluna"]],
       ex:[
-        {nome:"Agachamento goblet com halter", reps:"10–12", desc:60, aquece:true, prog:"fez 12 em todas as séries? semana que vem: +2 kg no halter", q:"Agachamento goblet com halter execução correta"},
-        {nome:"Leg press 45°", reps:"10–12", desc:60, prog:"fez 12 em todas as séries? semana que vem: +5 kg (2,5 kg de cada lado)", q:"Leg press 45° execução correta"},
-        {nome:"Elevação pélvica (hip thrust) com barra", reps:"10–12", desc:60, prog:"fez 12 em todas as séries? semana que vem: +5 kg na barra", q:"elevação pélvica com barra execução correta"},
-        {nome:"Supino reto com halteres", reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +1 kg em cada halter", q:"Supino reto com halteres execução correta"},
-        {nome:"Puxada frontal com triângulo", reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +1 placa (ou +2 kg)", q:"puxada frontal com triângulo pegada neutra execução"},
-        {nome:"Cadeira abdutora", reps:"12–15", desc:45, prog:"fez 15 em todas as séries? semana que vem: +1 placa (ou +2 kg)", q:"Cadeira abdutora execução correta"},
-        {nome:"Prancha frontal", reps:["30s","35s","40s","45s"], desc:30, semCarga:true, prog:"o tempo sobe sozinho a cada semana", q:"Prancha frontal execução correta"}
+        {nome:"Agachamento no smith", tipo:"pir", reps:"12 / 10 / 8", desc:75, aquece:true, prog:"fez a pirâmide com folga? semana que vem: +5 kg na barra (2,5 de cada lado)", q:"agachamento no smith execução correta"},
+        {nome:"Leg press 45°", tipo:"pir", reps:"12 / 10 / 8", desc:75, prog:"fez a pirâmide com folga? semana que vem: +10 kg (5 kg de cada lado)", q:"Leg press 45° execução correta"},
+        {nome:"Elevação pélvica (hip thrust) com barra", tipo:"normal", series:3, reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +5 kg na barra", q:"elevação pélvica com barra execução correta"},
+        {nome:"Supino reto com halteres", tipo:"normal", series:3, reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +1 kg em cada halter", q:"Supino reto com halteres execução correta"},
+        {nome:"Puxada frontal pegada aberta", tipo:"normal", series:3, reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +1 placa (ou +2 kg)", q:"puxada frontal pegada aberta execução correta"},
+        {nome:"Tri-set metabólico", tipo:"tri", desc:60, voltas:[3,3,4,4],
+         itens:[["Cadeira abdutora","15","Cadeira abdutora execução correta"],
+                ["Agachamento com peso do corpo","15","agachamento livre peso corporal execução"],
+                ["Prancha frontal",["30s","35s","40s","45s"],"Prancha frontal execução correta"]]}
       ]},
     B:{dia:"quarta", enfase:"ênfase posterior e glúteo",
-      mob:[["Mobilidade de tornozelo na parede","2 x 10 cada lado","Mobilidade de tornozelo na parede execução correta"],
-           ["Good morning sem carga","2 x 10","Good morning sem carga execução correta"],
-           ["Ponte de glúteo unilateral","2 x 8 cada lado","Ponte de glúteo unilateral execução correta"]],
+      mob:[["Abertura de quadril em pé (portão)","2 x 6 cada lado","mobilidade de quadril em pé abrir e fechar o portão"],
+           ["Caminhada com as mãos (inchworm)","2 x 5","inchworm caminhada com as mãos mobilidade"],
+           ["Rotação torácica em quatro apoios","2 x 8 cada lado","rotação torácica quatro apoios mobilidade"]],
       ex:[
-        {nome:"Levantamento terra romeno com halteres", reps:"10–12", desc:60, aquece:true, prog:"fez 12 em todas as séries? semana que vem: +2 kg em cada halter", q:"Levantamento terra romeno com halteres execução correta"},
-        {nome:"Agachamento búlgaro", reps:"8–10 cada perna", desc:60, prog:"fez 10 em todas as séries? semana que vem: +1 kg em cada halter", q:"Agachamento búlgaro execução correta"},
-        {nome:"Cadeira flexora", reps:"12–15", desc:45, prog:"fez 15 em todas as séries? semana que vem: +1 placa (ou +2 kg)", q:"Cadeira flexora execução correta"},
-        {nome:"Remada baixa", reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +1 placa (ou +2 kg)", q:"Remada baixa execução correta"},
-        {nome:"Desenvolvimento com halteres sentada", reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +1 kg em cada halter", q:"Desenvolvimento com halteres sentada execução correta"},
-        {nome:"Glúteo na polia (coice)", reps:"12–15 cada perna", desc:45, prog:"fez 15 em todas as séries? semana que vem: +1 placa (ou +1 kg)", q:"glúteo coice na polia execução"},
-        {nome:"Dead bug", reps:["8 cada lado","10 cada lado","10 cada lado","12 cada lado"], desc:30, semCarga:true, prog:"as repetições sobem sozinhas a cada semana", q:"Dead bug execução correta"}
+        {nome:"Terra romeno com barra ou kettlebell", tipo:"pir", reps:"12 / 10 / 8", desc:75, aquece:true, prog:"fez a pirâmide com folga? semana que vem: barra +4 kg ou o próximo kettlebell", q:"levantamento terra romeno com barra execução correta"},
+        {nome:"Agachamento búlgaro", tipo:"pir", reps:"10 / 8 / 6 cada perna", desc:75, prog:"fez a pirâmide com folga? semana que vem: +1 kg em cada halter", q:"Agachamento búlgaro execução correta"},
+        {nome:"Cadeira flexora", tipo:"normal", series:3, reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +1 placa (ou +2 kg)", q:"Cadeira flexora execução correta"},
+        {nome:"Remada baixa", tipo:"normal", series:3, reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +1 placa (ou +2 kg)", q:"Remada baixa execução correta"},
+        {nome:"Desenvolvimento com halteres sentada", tipo:"normal", series:3, reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +1 kg em cada halter", q:"Desenvolvimento com halteres sentada execução correta"},
+        {nome:"Tri-set metabólico", tipo:"tri", desc:60, voltas:[3,3,4,4],
+         itens:[["Glúteo na polia (coice)","12 cada perna","glúteo coice na polia execução"],
+                ["Flexão de braço inclinada no banco","10","flexão de braço inclinada no banco execução"],
+                ["Dead bug",["8 cada lado","10 cada lado","10 cada lado","12 cada lado"],"Dead bug execução correta"]]}
       ]},
     C:{dia:"sexta", enfase:"ênfase glúteo",
-      mob:[["Mobilidade de quadril 90/90","2 x 8 cada lado","mobilidade de quadril 90 90"],
-           ["Rotação torácica no chão (livro aberto)","2 x 8 cada lado","rotação torácica livro aberto mobilidade"],
-           ["Ponte de glúteo","2 x 12","Ponte de glúteo execução correta"]],
+      mob:[["Alongamento do maior do mundo (world's greatest stretch)","2 x 5 cada lado","world's greatest stretch execução"],
+           ["Ponte de glúteo com marcha","2 x 10 (alternando)","ponte de glúteo com marcha execução"],
+           ["Deslizamento de braços na parede","2 x 10","wall slide deslizamento na parede ombro"]],
       ex:[
-        {nome:"Agachamento sumô com halter", reps:"10–12", desc:60, aquece:true, prog:"fez 12 em todas as séries? semana que vem: +2 kg no halter", q:"Agachamento sumô com halter execução correta"},
-        {nome:"Recuo (passada para trás) com halteres", reps:"10 cada perna", desc:60, prog:"fez 10 em todas as séries? semana que vem: +1 kg em cada halter", q:"recuo afundo para trás com halteres execução"},
-        {nome:"Extensão de quadril no banco 45°", reps:"12–15", desc:45, prog:"fez 15 em todas as séries? semana que vem: segure uma anilha e suba 2 kg", q:"Extensão de quadril no banco 45° execução correta"},
-        {nome:"Supino inclinado com halteres", reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +1 kg em cada halter", q:"Supino inclinado com halteres execução correta"},
-        {nome:"Remada unilateral com halter", reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +2 kg no halter", q:"Remada unilateral com halter execução correta"},
-        {nome:"Cadeira extensora", reps:"12–15", desc:45, prog:"fez 15 em todas as séries? semana que vem: +1 placa (ou +2 kg)", q:"Cadeira extensora execução correta"},
-        {nome:"Prancha lateral", reps:["20s cada lado","25s cada lado","30s cada lado","30s cada lado"], desc:30, semCarga:true, prog:"o tempo sobe sozinho a cada semana", q:"Prancha lateral execução correta"}
+        {nome:"Agachamento sumô com halter", tipo:"pir", reps:"12 / 10 / 8", desc:75, aquece:true, prog:"fez a pirâmide com folga? semana que vem: +2 kg no halter", q:"Agachamento sumô com halter execução correta"},
+        {nome:"Passada andando com halteres", tipo:"pir", reps:"10 / 8 / 6 cada perna", desc:75, prog:"fez a pirâmide com folga? semana que vem: +1 kg em cada halter", q:"passada andando com halteres execução correta"},
+        {nome:"Extensão de quadril no banco 45°", tipo:"normal", series:3, reps:"12–15", desc:45, prog:"fez 15 em todas as séries? semana que vem: segure uma anilha e suba 2 kg", q:"Extensão de quadril no banco 45° execução correta"},
+        {nome:"Supino inclinado com halteres", tipo:"normal", series:3, reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +1 kg em cada halter", q:"Supino inclinado com halteres execução correta"},
+        {nome:"Remada unilateral com halter", tipo:"normal", series:3, reps:"10–12", desc:45, prog:"fez 12 em todas as séries? semana que vem: +2 kg no halter", q:"Remada unilateral com halter execução correta"},
+        {nome:"Tri-set metabólico", tipo:"tri", desc:60, voltas:[3,3,4,4],
+         itens:[["Cadeira extensora","15","Cadeira extensora execução correta"],
+                ["Subida no banco (step-up)","10 cada perna","step up no banco execução"],
+                ["Abdominal bicicleta","20 (10 cada lado)","abdominal bicicleta execução correta"]]}
       ]}
   }
 };
@@ -290,22 +296,24 @@ function home(){
 
 function treinoView(t){
   const T=PROGRAMA.treinos[t], s=PROGRAMA.semanas[week-1];
-  let h=`<section class="weeknote"><span class="eyebrow">Semana ${s.n} · ${s.series} séries por exercício</span><p>${esc(s.texto)}</p></section>`;
+  let h=`<section class="weeknote"><span class="eyebrow">Semana ${s.n} · ${esc(s.foco)}</span><p>${esc(s.texto)}</p></section>`;
   h+=`<h2 class="section-h">1 · Mobilidade inicial (5 a 8 min)</h2><div class="mob">`;
   T.mob.forEach((m,i)=>{const k=`m|${week}|${t}|${i}`;
     h+=`<div class="mobitem"><button class="check" data-k="${k}" aria-pressed="${!!get(k)}" aria-label="Marcar ${esc(m[0])} como feito">${tick}</button><span class="nm">${esc(m[0])}<small>${esc(m[1])}</small></span><a class="vid" href="${esc(yt(m[2]))}" target="_blank" rel="noopener">${play} como faz</a></div>`});
   h+=`</div><h2 class="section-h">2 · Treino</h2>`;
   T.ex.forEach((e,i)=>{
     const base=`${t}|${i}`, done=get(`d|${week}|${base}`);
+    if(e.tipo==="tri"){h+=triView(e,i,t,base,done);return;}
     const prev=week>1?[get(`k|${week-1}|${base}`),get(`r|${week-1}|${base}`)]:null;
     h+=`<article class="ex ${done?"is-done":""}" id="ex-${i}">
       <div class="exhead"><span class="num">${i+1}</span><span class="exname">${esc(e.nome)}</span><a class="vid" href="${esc(yt(e.q))}" target="_blank" rel="noopener">${play} como faz</a></div>
-      <div class="stats"><span class="stat"><small>séries x reps</small><b>${s.series} x ${esc(repsFor(e,week))}</b></span><span class="stat"><small>descanso</small><b>${e.desc}s</b></span></div>
-      ${e.aquece?`<p class="note"><b>Antes:</b> 1 a 2 séries leves de 10 (aquecimento).</p>`:""}
+      <div class="stats">${e.tipo==="pir"?`<span class="stat"><small>pirâmide · 3 séries</small><b>${esc(e.reps)}</b></span>`:`<span class="stat"><small>séries x reps</small><b>${e.series} x ${esc(repsFor(e,week))}</b></span>`}<span class="stat"><small>descanso</small><b>${e.desc}s</b></span></div>
+      ${e.aquece?`<p class="note"><b>Antes:</b> 1 série leve de 10 (aquecimento).</p>`:""}
+      ${e.tipo==="pir"?`<p class="note"><b>Pirâmide:</b> suba a carga a cada série. A última é a mais pesada.</p>`:""}
       <p class="note"><b>Progressão:</b> ${esc(e.prog)}</p>
       ${prev&&(prev[0]||prev[1])?`<div class="last">Semana ${week-1}: <b>${esc(prev[0]||"–")}${prev[0]&&!e.semCarga?" kg":""}</b> · ${esc(prev[1]||"–")} reps</div>`:""}
       <div class="log">
-        <div class="field"><label for="k-${i}">${e.semCarga?"tempo/obs.":"carga (kg)"}</label><input id="k-${i}" inputmode="${e.semCarga?"text":"decimal"}" data-k="k|${week}|${base}" value="${esc(get(`k|${week}|${base}`))}" placeholder="${e.semCarga?"–":"0"}"></div>
+        <div class="field"><label for="k-${i}">${e.semCarga?"tempo/obs.":e.tipo==="pir"?"carga na última (kg)":"carga (kg)"}</label><input id="k-${i}" inputmode="${e.semCarga?"text":"decimal"}" data-k="k|${week}|${base}" value="${esc(get(`k|${week}|${base}`))}" placeholder="${e.semCarga?"–":"0"}"></div>
         <div class="field"><label for="r-${i}">reps (última)</label><input id="r-${i}" inputmode="numeric" data-k="r|${week}|${base}" value="${esc(get(`r|${week}|${base}`))}" placeholder="0"></div>
         <button class="restbtn" data-rest="${e.desc}" data-name="${esc(e.nome)}">descanso ${e.desc}s</button>
       </div>
@@ -318,13 +326,32 @@ function treinoView(t){
   return h;
 }
 
+function triView(e,i,t,base,done){
+  const v=e.voltas[week-1];
+  let h=`<article class="ex ${done?"is-done":""}" id="ex-${i}">
+    <div class="exhead"><span class="num">${i+1}</span><span class="exname">${esc(e.nome)}<br><span class="ex-tag">3 exercícios seguidos, sem pausa</span></span></div>
+    <div class="stats"><span class="stat"><small>voltas</small><b>${v}</b></span><span class="stat"><small>descanso entre voltas</small><b>${e.desc}s</b></span></div>
+    <div class="mob">`;
+  e.itens.forEach((it,j)=>{const r=Array.isArray(it[1])?it[1][week-1]:it[1];
+    h+=`<div class="mobitem"><span class="num">${String.fromCharCode(97+j)}</span><span class="nm">${esc(it[0])}<small>${esc(r)}</small></span><a class="vid" href="${esc(yt(it[2]))}" target="_blank" rel="noopener">${play} como faz</a></div>`});
+  h+=`</div>
+    <div class="log">
+      <div class="field"><label for="k-${i}">carga / obs.</label><input id="k-${i}" inputmode="text" data-k="k|${week}|${base}" value="${esc(get(`k|${week}|${base}`))}" placeholder="–"></div>
+      <div class="field"><label for="r-${i}">voltas feitas</label><input id="r-${i}" inputmode="numeric" data-k="r|${week}|${base}" value="${esc(get(`r|${week}|${base}`))}" placeholder="0"></div>
+      <button class="restbtn" data-rest="${e.desc}" data-name="tri-set">descanso ${e.desc}s</button>
+    </div>
+    <button class="donebtn" data-done="d|${week}|${base}">${done?"✓ tri-set feito":"marcar como feito"}</button>
+  </article>`;
+  return h;
+}
+
 function cargas(){
-  let h=`<section class="weeknote"><span class="eyebrow">Minhas cargas</span><p>Carga e repetições da última série, semana a semana. Tudo fica salvo neste celular.</p></section>`;
+  let h=`<section class="weeknote"><span class="eyebrow">Minhas cargas</span><p>Carga e repetições da última série (na pirâmide, a série mais pesada), semana a semana. Tudo fica salvo neste celular.</p></section>`;
   for(const t of ["A","B","C"]){
     h+=`<h2 class="section-h">Treino ${t}</h2><div class="tablebox"><table><thead><tr><th>exercício</th>${PROGRAMA.semanas.map(s=>`<th>S${s.n}</th>`).join("")}</tr></thead><tbody>`;
     PROGRAMA.treinos[t].ex.forEach((e,i)=>{
       h+=`<tr><td>${esc(e.nome)}</td>`+PROGRAMA.semanas.map(s=>{const k=get(`k|${s.n}|${t}|${i}`),r=get(`r|${s.n}|${t}|${i}`);
-        return k||r?`<td>${esc(k||"–")}${k&&!e.semCarga?" kg":""}<br><span class="muted">${esc(r||"–")} reps</span></td>`:`<td class="empty">·</td>`}).join("")+`</tr>`;
+        return k||r?`<td>${esc(k||"–")}${k&&!e.semCarga?" kg":""}<br><span class="muted">${esc(r||"–")} ${e.tipo==="tri"?"voltas":"reps"}</span></td>`:`<td class="empty">·</td>`}).join("")+`</tr>`;
     });
     h+=`</tbody></table></div>`;
   }
@@ -338,15 +365,15 @@ function guia(){
   <section class="guide"><span class="eyebrow">Como usar este app</span>
     <ul><li>Escolha a semana no topo e toque no treino do dia.</li><li>Faça a mobilidade, depois siga os exercícios na ordem. Toque em <b>como faz</b> para ver a execução.</li><li>Anote a carga e as repetições da última série. Na semana seguinte, o app mostra o que você fez.</li><li>Use o botão <b>descanso</b> para cronometrar o intervalo.</li></ul>
     <p class="muted">Deixe o app na tela inicial: no iPhone, abra no Safari, toque em compartilhar e em "Adicionar à Tela de Início". No Android, menu do Chrome e "Adicionar à tela inicial".</p></section>
-  <section class="guide"><span class="eyebrow">Como executar</span>
-    <ul><li><b>Aquecimento com carga:</b> no 1º exercício de cada treino, 1 ou 2 séries leves de 10 antes das séries do treino.</li><li><b>Ritmo:</b> desça em 2 segundos, controlando, e suba com força.</li><li><b>Descanso:</b> 60s nos exercícios grandes, 45s nos menores e 30s no abdômen. Precisou de mais pra manter a técnica? Pode chegar a 90s.</li><li><b>Duração:</b> cerca de 45 a 50 minutos, já com a mobilidade.</li></ul></section>
+  <section class="guide"><span class="eyebrow">Como é o treino do mês 2</span>
+    <ul><li><b>Pirâmide (exercícios 1 e 2):</b> 3 séries de 12, 10 e 8 repetições. A carga sobe a cada série, então a de 8 é a mais pesada. Descanso de 75s.</li><li><b>Exercícios 3, 4 e 5:</b> 3 séries iguais, com 45s de descanso.</li><li><b>Tri-set no fim:</b> os 3 exercícios seguidos, sem pausa. Descansa 60s e repete. São 3 voltas nas semanas 1 e 2 e 4 voltas nas semanas 3 e 4.</li><li><b>Aquecimento:</b> no 1º exercício, 1 série leve de 10 antes da pirâmide.</li><li><b>Ritmo:</b> desça em 2 segundos, controlando, e suba com força.</li><li><b>Duração:</b> cerca de 45 a 50 minutos, já com a mobilidade.</li></ul></section>
   <section class="guide"><span class="eyebrow">Como escolher a carga</span>
-    <p>Termine cada série sentindo que ainda daria pra fazer mais algumas repetições:</p>
-    <ul><li><b>S1:</b> 2 séries · sobrar umas 4</li><li><b>S2:</b> 3 séries · sobrar umas 3</li><li><b>S3:</b> 3 séries · sobrar umas 2</li><li><b>S4:</b> 3 séries · sobrar 1 nas máquinas e 2 no peso livre</li></ul>
+    <p>Olhe para a última série da pirâmide (a de 8). Ela tem que terminar com algumas repetições sobrando:</p>
+    <ul><li><b>S1:</b> sobrar umas 3</li><li><b>S2:</b> sobrar umas 2</li><li><b>S3:</b> sobrar 1 ou 2</li><li><b>S4:</b> a maior carga do mês, sem perder a técnica</li></ul>
     <p class="muted">Sobrou muito? Aumente. Não sobrou nenhuma ou a técnica piorou? Diminua.</p></section>
   <section class="guide"><span class="eyebrow">Quando subir a carga</span>
-    <p>Fez o número máximo de repetições da faixa em todas as séries? Na semana seguinte, suba a carga. O quanto subir está em cada exercício. Não chegou no máximo? Repita a carga e tente de novo.</p>
-    <p class="muted">Exemplo: agachamento goblet, 10 a 12 repetições. Fez 12 com 8 kg em todas as séries? Semana que vem, 10 kg.</p></section>
+    <p>Pirâmide: fez as 3 séries com a folga da semana? Na semana seguinte, suba a carga de todas as séries. Exercícios normais: fez o máximo da faixa em todas as séries? Sobe. O quanto subir está em cada exercício.</p>
+    <p class="muted">Exemplo: leg press, pirâmide com 60, 70 e 80 kg e folga na série de 8. Semana que vem: 70, 80 e 90 kg.</p></section>
   <section class="guide"><span class="eyebrow">E se…</span>
     <ul><li><b>faltei um treino:</b> não dobra. Faz o próximo da ordem e segue a semana.</li><li><b>a academia não tem o aparelho:</b> chama a equipe no grupo que a gente te passa uma troca.</li><li><b>quero treinar mais:</b> nos dias livres, caminhada, corrida leve, bike ou aula coletiva.</li><li><b>doeu:</b> desconforto muscular é normal. Dor forte ou em pontada na articulação, tontura, falta de ar fora do normal ou dor no peito: pare e procure orientação.</li></ul>
     <p class="muted">Suporte: dúvidas no grupo do WhatsApp, respondidas pela equipe Tathy Afonso de segunda a sexta, em horário comercial.</p></section>
